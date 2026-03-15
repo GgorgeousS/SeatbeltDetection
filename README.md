@@ -31,7 +31,6 @@
 
 ```
 SeatbeltDetection/
-	DataSet/                 # датасет (train/valid/test) + data.yaml
 	models/                  # веса модели (best.pt, last.pt, yolov8n.pt)
 	src/                     # код проекта
 		train_seatbelt.py      # обучение YOLOv8 на DataSet
@@ -70,7 +69,6 @@ PowerShell (Windows):
 ```powershell
 python -m venv .venv
 ./.venv/Scripts/Activate.ps1
-```
 
 CMD (Windows):
 
@@ -157,24 +155,7 @@ cd src
 uvicorn api:app --reload
 ```
 
-Пример запроса (PowerShell):
-
-```powershell
-$resp = Invoke-RestMethod -Method Post -Uri http://127.0.0.1:8000/detect -Form @{ file = Get-Item "C:\\path\\to\\image.jpg" }
-$resp | ConvertTo-Json -Depth 5
-```
-
-Ответ содержит список детекций с `confidence` и `bbox`.
-
-
 ## 🧪 Датасет
 
 Описание датасета и классов находится в `DataSet/data.yaml`.
 Сейчас класс один: `Seat-Belt`.
-
-
-## 🧩 Частые проблемы
-
-- `cv2.VideoCapture` не открывает видео: попробуйте MP4 (H.264), проверьте путь к файлу (лучше полный путь), либо перекодируйте видео.
-- Ошибка загрузки весов: убедитесь, что файл `models/best.pt` существует и вы запускаете приложения из папки `src/`.
-
