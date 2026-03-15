@@ -1,0 +1,45 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyd
+*.pyo
+*.pdb
+*.so
+*.egg-info/
+dist/
+build/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# Virtual environments
+.venv/
+venv/
+ENV/
+
+# Jupyter
+.ipynb_checkpoints/
+
+# VS Code / IDE
+.vscode/
+.idea/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Project outputs / artifacts
+runs/
+outputs/
+gradio_outputs/
+.gradio/
+
+# Data & models (usually large)
+DataSet/
+models/*.pt
+
+# Local test media (videos are usually large)
+test/*.mp4
+test/*.avi
+test/*.mov
+test/*.mkv
