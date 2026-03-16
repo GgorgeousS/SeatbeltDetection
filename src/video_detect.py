@@ -7,7 +7,7 @@ def main():
 
 
     # Путь к видеофайлу
-    video_path = "testvideo.mp4"  # замени на своё видео
+    video_path = "testvideo.mp4" 
     cap = cv2.VideoCapture(video_path)
 
     if not cap.isOpened():
@@ -19,7 +19,7 @@ def main():
     width  = int(cap.get(cv2.CAP_PROP_FRAME_WIDTH))
     height = int(cap.get(cv2.CAP_PROP_FRAME_HEIGHT))
 
-    # Создаём выходной файл (если хочешь сохранить результат)
+    # Создаём выходной файл
     out = cv2.VideoWriter(
         "output_video1.mp4",
         cv2.VideoWriter_fourcc(*"mp4v"),

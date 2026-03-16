@@ -6,10 +6,10 @@ def main():
 
     # Запускаем обучение
     model.train(
-        data="DataSet/data.yaml",      # путь к твоему YAML
+        data="DataSet/data.yaml",      # путь к YAML
         epochs=50,             # количество эпох
         imgsz=640,             # размер входного изображения
-        batch=8,               # размер батча (если мало RAM — уменьшай)
+        batch=8,               # размер батча (если мало RAM — уменьшаем)
         device="cpu",          # AMD → тренируем на CPU
         project="runs_seatbelt",
         name="yolov8n_seatbelt"

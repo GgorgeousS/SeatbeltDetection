@@ -7,7 +7,7 @@ def main():
 
 
     # Путь к тестовой картинке
-    img_path = "3195.jpeg"  # замени на свою картинку
+    img_path = "3195.jpeg" 
 
     # Запускаем предсказание
     results = model(img_path)
