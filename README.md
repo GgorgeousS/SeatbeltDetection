@@ -31,7 +31,7 @@
 
 ```
 SeatbeltDetection/
-	DataSet/                 # датасет (train/valid/test) + data.yaml (обычно большой)
+	DataSet/                 # датасет (train/valid/test) + data.yaml
 	models/                  # веса модели (best.pt, last.pt, yolov8n.pt)
 	src/                     # код проекта
 		train_seatbelt.py      # обучение YOLOv8 на DataSet
