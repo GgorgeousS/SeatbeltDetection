@@ -31,6 +31,7 @@
 
 ```
 SeatbeltDetection/
+	DataSet/                 # датасет (train/valid/test) + data.yaml (обычно большой)
 	models/                  # веса модели (best.pt, last.pt, yolov8n.pt)
 	src/                     # код проекта
 		train_seatbelt.py      # обучение YOLOv8 на DataSet
@@ -39,6 +40,7 @@ SeatbeltDetection/
 		gradio_app.py          # веб-интерфейс Gradio (видео → статус + файл)
 		api.py                 # FastAPI endpoint (/detect) для изображений
 	runs/                    # артефакты Ultralytics (если запускали train/predict)
+	test/                    # локальные тестовые файлы (по желанию)
 	requirements.txt
 	README.md
 ```
@@ -60,6 +62,7 @@ SeatbeltDetection/
 ```bash
 git clone https://github.com/<your-username>/SeatbeltDetection.git
 cd SeatbeltDetection
+```
 
 
 ### 🔹 2. Создать и активировать виртуальное окружение
@@ -69,12 +72,14 @@ PowerShell (Windows):
 ```powershell
 python -m venv .venv
 ./.venv/Scripts/Activate.ps1
+```
 
 CMD (Windows):
 
 ```bat
 python -m venv .venv
 .venv\Scripts\activate
+```
 ```
 
 
@@ -86,6 +91,39 @@ pip install -r requirements.txt
 ```
 
 Примечание про `torch`: на некоторых машинах/версиях Python может потребоваться установка CPU-сборки с официального индекса PyTorch. Если `pip install -r requirements.txt` падает на `torch`, поставьте PyTorch по инструкции с https://pytorch.org/ и повторите установку остальных пакетов.
+
+
+## 🧱 Веса модели (обязательно для детекта)
+
+Почему на GitHub «только скрипты»:
+- Файл весов `best.pt` и папка датасета обычно большие, поэтому они исключены из коммита через `.gitignore`.
+- GitHub ограничивает размер файлов в обычном Git (и большие бинарники сильно раздувают историю репозитория).
+
+Чтобы любой человек мог скачать и протестировать проект, сделайте один из вариантов ниже.
+
+### Вариант A (рекомендуется): GitHub Releases
+
+1) На GitHub откройте ваш репозиторий → **Releases** → **Draft a new release**.
+2) Прикрепите файл весов (например `best.pt`) как asset.
+3) Пользователь скачивает asset и кладёт его в папку:
+
+```
+models/best.pt
+```
+
+После этого можно запускать `gradio_app.py`, `video_detect.py`, `test_image.py`.
+
+### Вариант B: обучить самому
+
+Пользователь запускает обучение и затем копирует веса в `models/best.pt`:
+
+```bash
+python src/train_seatbelt.py
+```
+
+### Вариант C: Git LFS (если хотите хранить веса прямо в репозитории)
+
+Подходит, если вы понимаете ограничения LFS по квоте на GitHub. В этом случае `models/best.pt` можно трекать через LFS, а не через обычный Git.
 
 
 ## ✅ Быстрый старт (Gradio)
@@ -155,7 +193,23 @@ cd src
 uvicorn api:app --reload
 ```
 
+Пример запроса (PowerShell):
+
+```powershell
+$resp = Invoke-RestMethod -Method Post -Uri http://127.0.0.1:8000/detect -Form @{ file = Get-Item "C:\\path\\to\\image.jpg" }
+$resp | ConvertTo-Json -Depth 5
+```
+
+Ответ содержит список детекций с `confidence` и `bbox`.
+
 ## 🧪 Датасет
 
 Описание датасета и классов находится в `DataSet/data.yaml`.
 Сейчас класс один: `Seat-Belt`.
+
+
+## 🧩 Частые проблемы
+
+- Приложение не стартует без весов: положите файл в `models/best.pt` (см. раздел «Веса модели»).
+- `cv2.VideoCapture` не открывает видео: используйте MP4 (H.264), проверьте путь к файлу (лучше полный путь), либо перекодируйте видео.
+- Ошибка путей к весам: скрипты детекта ожидают запуск из папки `src/` (или используйте полный путь к весам).
